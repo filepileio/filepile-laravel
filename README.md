@@ -5,13 +5,13 @@
 Install into your project using:
 
 ```
-composer require filepile/filepile-integration-laravel
+composer require filepile/filepile-laravel
 ```
 
 If using Laravel older than 5.5, add to your config/app.php providers array:
 
 ```
-FilePile\FilePileIntegration\Providers\FilePileIntegrationServiceProvider::class,
+FilePile\FilePileLaravel\Providers\FilePileLaravelServiceProvider::class,
 ```
 
 ## Getting Started
