@@ -53,9 +53,9 @@ class FilePileInstallPile extends Command
             $writeFilesConfirmation = $this->getWriteFilesConfirmation($pileBaseInstallPath, $files);
             if($writeFilesConfirmation){
                 $this->installFiles($pileBaseInstallPath,$files);
+                $this->showPostInstallationMessage($pile);
             }
         }
-        $this->showPostInstallationMessage($pile);
     }
 
     private function getPileFromSlug($pileSlug){
