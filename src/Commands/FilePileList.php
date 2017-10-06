@@ -35,11 +35,15 @@ class FilePileList extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
+    public function handle() {
         $apiClient = new \FilePile\FilePileLaravel\API\Client();
-        $response = $apiClient->call('GET','/api/v1/account/pile');
-        $piles = json_decode($response);
+        try {
+            $apiResponse = $apiClient->call('GET', '/api/v1/account/pile');
+        } catch (\FilePile\FilePileLaravel\API\Exceptions\InvalidKeyException $exception){
+            $this->error('Error: '.$exception->getMessage());
+            return null;
+        }
+        $piles = json_decode($apiResponse);
         if(count($piles) > 0){
             $this->info('The following commands are available:');
             foreach($piles as $pile){

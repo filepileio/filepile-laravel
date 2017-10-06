@@ -2,6 +2,8 @@
 
 namespace FilePile\FilePileLaravel\API;
 
+use FilePile\FilePileLaravel\API\Exceptions\InvalidKeyException;
+
 class Client{
 
     private $client;
@@ -10,6 +12,10 @@ class Client{
         $this->client = new \GuzzleHttp\Client([
             'base_uri' => config('filepile.baseURI'),
         ]);
+        $apiKey = config('filepile.apiKey');
+        if(empty($apiKey)){
+            throw new InvalidKeyException('Please enter your FilePile API Key in .env');
+        }
         $requestOptions = [
             'headers' => [
                 'Authorization' => 'Bearer '.config('filepile.apiKey'),
@@ -32,7 +38,7 @@ class Client{
         } catch (\GuzzleHttp\Exception\ClientException $error){
             switch ($error->getResponse()->getStatusCode()) {
                 case '401':
-                    throw new \Exception('Ops, look like your key is invalid.');
+                    throw new InvalidKeyException('Unable to authenticate, please verify your FilePile API key');
                     break;
             }
         }
