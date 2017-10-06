@@ -4,8 +4,10 @@ namespace FilePile\FilePileLaravel\API;
 
 class Client{
 
+    private $client;
+
     public function call($method, $uri, $data = []){
-        $client = new \GuzzleHttp\Client([
+        $this->client = new \GuzzleHttp\Client([
             'base_uri' => config('filepile.baseURI'),
         ]);
         $requestOptions = [
@@ -19,9 +21,21 @@ class Client{
         }else{
             $requestOptions['form_params'] = $data;
         }
-        $request = $client->request($method, $uri, $requestOptions);
-        $response = $request->getBody();
-        return $response->getContents();
+
+        return $this->handleRequest($method, $uri, $requestOptions)->getContents();
+    }
+
+    private function handleRequest($method, $uri, $requestOptions){
+        try {
+            $request = $this->client->request($method, $uri, $requestOptions);
+            return $request->getBody();
+        } catch (\GuzzleHttp\Exception\ClientException $error){
+            switch ($error->getResponse()->getStatusCode()) {
+                case '401':
+                    throw new \Exception('Ops, look like your key is invalid.');
+                    break;
+            }
+        }
     }
 
 }
