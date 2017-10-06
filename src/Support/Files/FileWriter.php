@@ -20,11 +20,16 @@ class FileWriter{
         $directory = '';
         foreach ($pathParts as $pathPart) {
             $directory .= DIRECTORY_SEPARATOR. $pathPart;
+
+            if (!is_writable($directory)) {
+                throw new \Exception("Ops!, looks like the FilePile do not have permission to create your files, please check the path permissions.");
+            }
+
             if (!is_dir($directory) && strlen($directory) > 0 && strpos($directory, ".") == false) {
                 mkdir($directory , 655);
             }elseif(!file_exists($directory) && strpos($directory, ".") !== false){
                 touch($directory);
-            }
+            } 
         }
     }
 
