@@ -48,6 +48,10 @@ class FilePileInstallPile extends Command {
         $pileBaseInstallPath = $this->getPileBaseInstallPath($pile->install_path);
         $promptInputs = $this->getPromptInputs($pile);
         $files = $this->getFiles($pile, $promptInputs);
+        if (!$files) {
+            $this->error('The selected Pile contains an empty repository');
+            return null;
+        }
         $writeFilesConfirmation = $this->getWriteFilesConfirmation($pileBaseInstallPath, $files);
         if ($writeFilesConfirmation) {
             $this->installFiles($pileBaseInstallPath, $files);
