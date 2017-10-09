@@ -2,6 +2,8 @@
 
 namespace FilePile\FilePileLaravel\Support\Files;
 
+use FilePile\FilePileLaravel\Support\Files\Exceptions\FileException;
+
 class FileWriter{
 
     public function create($filePath, $fileContent){
@@ -10,7 +12,10 @@ class FileWriter{
     }
 
     public function addContent($filePath, $fileContent){
-        $file = fopen($filePath, "w") or die("Unable to open file: ".$filePath);
+        $file = fopen($filePath, "w");
+        if(!$file){
+            throw new FileException('Unable to open file: '.$filePath);
+        }
         fwrite($file, $fileContent);
         fclose($file);
     }

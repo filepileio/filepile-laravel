@@ -2,6 +2,7 @@
 
 namespace FilePile\FilePileLaravel\Commands;
 
+use FilePile\FilePileLaravel\Support\Files\Exceptions\FileException;
 use FilePile\FilePileLaravel\Support\Files\FileWriter;
 use Illuminate\Console\Command;
 
@@ -134,7 +135,11 @@ class FilePileInstallPile extends Command {
             $this->info('+ Creating: ' . $fullFilePath);
             $fileContent = base64_decode($file->content);
             $fileWriter = new FileWriter();
-            $fileWriter->create(base_path($fullFilePath), $fileContent);
+            try {
+                $fileWriter->create(base_path($fullFilePath), $fileContent);
+            }catch (FileException $exception){
+                $this->error('Error: '.$exception->getMessage());
+            }
         }
     }
 
