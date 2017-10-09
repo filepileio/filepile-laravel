@@ -27,7 +27,7 @@ class FileWriter{
             $directory .= DIRECTORY_SEPARATOR. $pathPart;
 
             if (!is_writable($directory)) {
-                throw new \Exception("Ops!, looks like the FilePile do not have permission to create your files, please check the path permissions.");
+                throw new FileException('It looks like the FilePile do not have permission to create your files, please check the path permissions: '.$directory);
             }
 
             if (!is_dir($directory) && strlen($directory) > 0 && strpos($directory, ".") == false) {
