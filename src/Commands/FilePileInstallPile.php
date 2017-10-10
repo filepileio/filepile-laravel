@@ -133,10 +133,11 @@ class FilePileInstallPile extends Command {
             $this->error('-File exists: ' . $fullFilePath);
         } else {
             $this->info('+ Creating: ' . $fullFilePath);
-            $fileContent = base64_decode($file->content);
-            $fileWriter = new FileWriter();
+            $fileWriter = new FileWriter($fullFilePath);
             try {
-                $fileWriter->create(base_path($fullFilePath), $fileContent);
+                if ($fileWriter->createDirectories() && $fileWriter->createFile()) {
+                    $fileWriter->addContent(base64_decode($file->content));
+                }
             }catch (FileException $exception){
                 $this->error('Error: '.$exception->getMessage());
             }
