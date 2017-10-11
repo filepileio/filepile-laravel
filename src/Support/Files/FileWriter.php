@@ -63,17 +63,14 @@ class FileWriter
      */
     public function createDirectories() {
         $directory = base_path();
+        $filePileDirectory = $directory . DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $this->path);
 
         if (!is_writeable($directory)) {
             throw new FileException('It looks like the FilePile do not have permission to create your files, please check the path permissions: '.$directory);
         }
 
-        foreach ($this->path as $path) {
-            $directory .= DIRECTORY_SEPARATOR . $path;
-
-            if (!is_dir($directory)) {
-                mkdir($directory, 655);
-            }
+        if (!is_dir($filePileDirectory)) {
+            mkdir($filePileDirectory, 655, true);
         }
 
         return true;
