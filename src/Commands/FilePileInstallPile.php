@@ -47,6 +47,7 @@ class FilePileInstallPile extends Command {
             return null;
         }
         $pileBaseInstallPath = $this->getPileBaseInstallPath($pile->install_path);
+        $pileBaseInstallPath = ltrim($pileBaseInstallPath, '/');
         $promptInputs = $this->getPromptInputs($pile);
         $files = $this->getFiles($pile, $promptInputs);
         if (!$files) {
