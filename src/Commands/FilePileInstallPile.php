@@ -72,9 +72,9 @@ class FilePileInstallPile extends Command {
         return json_decode($pileResponse);
     }
 
-    private function getPileBaseInstallPath($defaultPath = '/') {
+    private function getPileBaseInstallPath($defaultPath = './') {
         if (empty($defaultPath)) {
-            $defaultPath = '/';
+            $defaultPath = './';
         }
         return $this->ask('Pile Install Path (From Project Root)?', $defaultPath);
     }
@@ -119,7 +119,9 @@ class FilePileInstallPile extends Command {
     private function fullFilePath($pileBaseInstallPath, $file) {
         $pileBaseInstallPath = trim($pileBaseInstallPath, '/');
         $filePath = trim($file->path, '/');
-        return $pileBaseInstallPath . '/' . $filePath;
+        $fullFilePath = $pileBaseInstallPath . '/' . $filePath;
+        $fullFilePath = ltrim($fullFilePath,'/');
+        return $fullFilePath;
     }
 
     private function installFiles($pileBaseInstallPath, $files) {
